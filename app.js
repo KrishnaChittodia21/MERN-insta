@@ -1,7 +1,17 @@
 import express from 'express';
-const app = express();
+import mongoose from 'mongoose';
 
+const app = express();
 const PORT = 5000;
+
+mongoose.connect();
+
+const middleWare = (req, res, next) => {
+  console.log('Middleware Used');
+  next();
+}
+
+app.use(middleWare)
 
 app.get('/', (req, res) => {
   res.send('Hello World');

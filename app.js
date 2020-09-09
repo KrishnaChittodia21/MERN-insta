@@ -3,9 +3,12 @@ import express from 'express';
 import mongoose from 'mongoose';
 import keys from './keys';
 import './models/user';
+import auth from './routes/auth';
 
 const app = express();
 const PORT = 5000;
+
+app.use(auth);
 
 mongoose.connect(keys.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 

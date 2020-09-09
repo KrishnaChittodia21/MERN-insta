@@ -13,7 +13,7 @@ router.post('/signup', (req, res) => {
       error: 'Please add all the fields',
     });
   }
-  res.status(200).json({
+  return res.status(200).json({
     message: 'Successfully posted',
   });
 });

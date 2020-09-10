@@ -1,13 +1,21 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 import { Router } from 'express';
 import { model } from 'mongoose';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import { JWT_SECRET } from '../keys';
+import requireLogin from '../middleware/requireLogin';
 
 const router = Router();
 const User = model('User');
 
 router.get('/', (req, res) => {
   res.send('Hello');
+});
+
+router.get('/protected', requireLogin, (req, res) => {
+  res.send('Hello User');
 });
 
 router.post('/signup', (req, res) => {
@@ -64,8 +72,9 @@ router.post('/login', (req, res) => {
       bcrypt.compare(password, savedUser.password)
         .then((matched) => {
           if (matched) {
-            res.status(200).json({
-              message: 'logged in successfully',
+            const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
+            res.json({
+              token,
             });
           } else {
             return res.status(422).json({

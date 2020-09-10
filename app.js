@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import express from 'express';
 import mongoose from 'mongoose';
-import keys from './keys';
+import { MONGO_URI } from './keys';
 import './models/user';
 import auth from './routes/auth';
 
@@ -10,7 +10,7 @@ const PORT = 5000;
 
 app.use(express.json());
 app.use(auth);
-mongoose.connect(keys.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 mongoose.connection.on('connected', () => {
   console.log('connected to mongoose');

@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 
+const { ObjectId } = Schema.Types;
 const userSchema = new Schema({
   name: {
     type: String,
@@ -13,6 +14,14 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  followers: [{
+    type: ObjectId,
+    ref: 'User',
+  }],
+  following: [{
+    type: ObjectId,
+    ref: 'User',
+  }],
 });
 
 model('User', userSchema);

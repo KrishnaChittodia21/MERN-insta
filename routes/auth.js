@@ -4,11 +4,18 @@ import { Router } from 'express';
 import { model } from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { JWT_SECRET } from '../keys';
+import nodemailer from 'nodemailer';
+import sendgridtransport from 'nodemailer-sendgrid-transport';
+import { JWT_SECRET, MAILER_KEY } from '../keys';
 import requireLogin from '../middleware/requireLogin';
 
 const router = Router();
 const User = model('User');
+const transporter = nodemailer.createTransport(sendgridtransport({
+  auth: {
+    api_key: MAILER_KEY,
+  },
+}));
 
 router.get('/', (req, res) => {
   res.send('Hello');
@@ -43,7 +50,13 @@ router.post('/signup', (req, res) => {
             pic,
           });
           user.save()
-            .then((user) => {
+            .then((userResult) => {
+              transporter.sendMail({
+                to: userResult.email,
+                from: 'krishnachittodia.10@gmail.com',
+                subject: 'signup success',
+                html: '<h1>Welcome to my creativity</h1>',
+              });
               res.status(200).json({
                 message: 'User saved successfully',
               });

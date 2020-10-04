@@ -29,6 +29,6 @@ const postSchema = new Schema({
     type: ObjectId,
     ref: 'User',
   },
-});
+}, { timestamps: true });
 
 model('Post', postSchema);

@@ -68,4 +68,16 @@ router.put('/updateprofilepic', requireLogin, (req, res) => {
     });
 });
 
+router.post('/search-users', (req, res) => {
+  const userPattern = new RegExp(`^${req.body.query}`);
+  User.find({ email: { $regex: userPattern } })
+    .then((user) => {
+      res.json({ user });
+    })
+    .catch((err) => {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    });
+});
+
 export default router;

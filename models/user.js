@@ -14,6 +14,8 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  resetToken: String,
+  expireToken: Date,
   pic: {
     type: String,
     default: 'https://res.cloudinary.com/kannu21/image/upload/v1601738527/noimage_q2i5as.jpg',
